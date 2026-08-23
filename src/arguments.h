@@ -72,7 +72,6 @@ enum SHORT_ENUM Clock {
 enum SHORT_ENUM Output {
     OUTPUT_NONE,
     OUTPUT_TEXT,
-    OUTPUT_SVG,  // obsolete
     OUTPUT_COLLAPSED,
     OUTPUT_FLAMEGRAPH,
     OUTPUT_TREE,
