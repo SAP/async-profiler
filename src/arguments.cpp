@@ -498,6 +498,8 @@ const char* Arguments::expandFilePattern(const char* pattern) {
                         continue;
                     }
                 }
+            } else if (c != '%') {
+                *ptr++ = '%';  // keep other escape sequences (e.g. URL encoding) intact
             }
         }
         *ptr++ = c;
@@ -508,6 +510,10 @@ const char* Arguments::expandFilePattern(const char* pattern) {
 }
 
 Output Arguments::detectOutputFormat(const char* file) {
+    if (isUrl(file)) {
+        return OUTPUT_OTLP;
+    }
+
     const char* ext = strrchr(file, '.');
     if (ext != NULL) {
         if (strcmp(ext, ".html") == 0) {
@@ -519,6 +525,10 @@ Output Arguments::detectOutputFormat(const char* file) {
         }
     }
     return OUTPUT_TEXT;
+}
+
+bool Arguments::isUrl(const char* file) {
+    return strncmp(file, "http://", 7) == 0 || strncmp(file, "https://", 8) == 0;
 }
 
 long Arguments::parseUnits(const char* str, const Multiplier* multipliers) {
